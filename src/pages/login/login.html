@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>Ingreso</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content scroll="false" style="background-image: url('assets/images/fondo.png')">
+  <div padding id="cloud-layer">
+
+    <div style="width:50%; margin: 0 auto">
+      <ion-row>
+        <ion-col>
+          <img style="margin: 0 auto;" src="assets/images/icon.png" />
+        </ion-col>
+      </ion-row>
+      <h4 style="width: 100%; margin: 0 auto;"><strong>Carga de Crédito</strong></h4>
+    </div>
+    <ion-row>
+      <ion-col>
+      <ion-list inset>
+
+      <ion-label class="myLabel">Email</ion-label>
+      <ion-item style="border-radius: 25px">
+        <ion-input  type="email" [(ngModel)]="user.email"></ion-input>
+      </ion-item>
+
+      <ion-label class="myLabel">Constraseña</ion-label>
+      <ion-item style="border-radius: 25px">
+        <ion-input  type="password" [(ngModel)]="user.password"></ion-input>
+      </ion-item>
+
+      </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <div style= "width:12em; margin: 0 auto">
+          <button ion-button style="width:100%; margin: 0 auto; border-radius: 25px; color:black; font-weight: bold" class="login-button" (click)="login(user)" >Ingresar</button>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col>
+          <div style= "width:12em; margin: 0 auto">
+            <button ion-button style="width:100%; margin: 0 auto; border-radius: 25px; color:black; font-weight: bold" class="login-button" (click)="register()" >Registrarse</button>
+          </div>
+        </ion-col>
+      </ion-row>
+
+  </div>
+</ion-content>
