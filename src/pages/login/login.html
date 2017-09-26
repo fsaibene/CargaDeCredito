@@ -20,22 +20,35 @@
 
       <ion-label class="myLabel">Email</ion-label>
       <ion-item style="border-radius: 25px">
-        <ion-input  type="email" [(ngModel)]="user.email"></ion-input>
+        <ion-input  type="email" [(ngModel)]="user.email" required></ion-input>
       </ion-item>
 
       <ion-label class="myLabel">Constraseña</ion-label>
       <ion-item style="border-radius: 25px">
-        <ion-input  type="password" [(ngModel)]="user.password"></ion-input>
+        <ion-input  type="password" [(ngModel)]="user.password" required></ion-input>
       </ion-item>
 
       </ion-list>
       </ion-col>
     </ion-row>
 
+    <ion-list style="width:100%; margin: 0 auto; border-radius: 25px; color:black; font-weight: bold">
+      <ion-item style="width:90%; margin: 0 auto; border-radius: 25px; color:black; font-weight: bold">
+        <ion-label>Seleccionar Usuario</ion-label>
+        <ion-select  style="width:50%; margin: 0 auto; border-radius: 25px; color:black; font-weight: bold"  name="firstField" [(ngModel)]="selectedUser" (ionChange)="SeleccionarUsuario()">
+          <ion-option value="usuario">Usuario</ion-option>
+          <ion-option value="admin">Administrador</ion-option>
+          <ion-option value="invitado">Invitado</ion-option>
+          <ion-option value="jugador1">Jugador 1</ion-option>
+          <ion-option value="jugador2">Jugador 2</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
     <ion-row>
       <ion-col>
         <div style= "width:12em; margin: 0 auto">
-          <button ion-button style="width:100%; margin: 0 auto; border-radius: 25px; color:black; font-weight: bold" class="login-button" (click)="login(user)" >Ingresar</button>
+          <button ion-button style="width:100%; margin: 0 auto; border-radius: 25px; color:black; font-weight: bold" class="login-button" (click)="login(user)" [disabled]="isInvalid()" >Ingresar</button>
         </div>
       </ion-col>
     </ion-row>

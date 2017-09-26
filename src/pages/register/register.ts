@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { User } from '../../models/user';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { ToastController, AlertController  } from 'ionic-angular';
+import { ToastController, AlertController, Loading, LoadingController  } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 
 @IonicPage()
@@ -14,38 +14,50 @@ export class RegisterPage {
 
   user = {} as User;
   passRepetido: string;
+  spinner
 
   constructor(private authAf: AngularFireAuth,
     public alertCtrl: AlertController,
     public navCtrl: NavController,
     public toastCtrl: ToastController,
-    public navParams: NavParams) {
+    public navParams: NavParams,
+    public loadingCtrl: LoadingController
+  ) {
   }
 
-  register(user: User, passRepetido: string){
+  async register(user: User, passRepetido: string){
     if(passRepetido != user.password){
-      console.log("if1");
       this.alertCtrl.create({
         title: 'Error',
         subTitle: 'Las contraseñas no coinciden',
         buttons: ['Ok']
       }).present();
     } else if(passRepetido == "" || user.password == "" || user.email == ""){
-      console.log("if2");
       this.toastCtrl.create({
         message: "Debe completar todos los campos",
         duration: 2000
       }).present();
     } else {
-      console.log("if3");
-        this.authAf.auth.createUserWithEmailAndPassword(user.email, user.password)
+        let loading = this.loadSpinner();
+        loading.present();
+        await this.authAf.auth.createUserWithEmailAndPassword(user.email, user.password)
         .then(r => { 
+          loading.dismiss();
           this.toastCtrl.create({message: "Usuario registrado con éxito!", duration: 3000}).present(); 
           this.navCtrl.setRoot(LoginPage);
         })
         .catch(e => {
-          this.toastCtrl.create({message: "Error al registrarse", duration: 1500}).present();
+          loading.dismiss();
+          this.toastCtrl.create({message: "Error al registrarse:" + e.message, duration: 3000}).present();
         });
       }
     }
-  }
+    private loadSpinner():Loading
+    {
+      let loader = this.loadingCtrl.create({
+        content:"Registrando Usuario..",
+        duration: 2500
+      });
+      return loader;
+    }
+}
