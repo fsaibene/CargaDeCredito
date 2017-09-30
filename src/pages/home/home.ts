@@ -18,6 +18,8 @@ export class HomePage implements AfterViewInit, OnDestroy {
   scannedCodes: Array<string>;
   countCodes: number;
   lista: FirebaseListObservable<any>;
+  listaDB: Array<string>;
+  subLista: Subscription;
 
   constructor(private ns: NavService,
      public toastCtrl: ToastController,
@@ -30,11 +32,20 @@ export class HomePage implements AfterViewInit, OnDestroy {
     ) {
       this.lista = af.list('/codes', { preserveSnapshot: true});
       this.scannedCodes = new Array<string>();
+      this.listaDB = new Array<string>();
+      this.subLista = this.lista.subscribe(snapshots=>{
+        snapshots.forEach(snapshot => {
+            this.listaDB.push(snapshot.val());
+          });
+        });
+      this.scannedCodes.push("8c95def646b6127282ed50454b73240300dccabc");
+      this.scannedCodes.push("ae338e4e0cbb4e4bcffaf9ce5b409feb8edd5172");
   }
   public ngAfterViewInit(){
   }
 
   public ngOnDestroy(){
+    this.subLista.unsubscribe();
   }
   
   logout(){
@@ -64,15 +75,13 @@ export class HomePage implements AfterViewInit, OnDestroy {
     this.scannedCodes.push(this.scannedCode);
   }
   
-  VerifyCode(): boolean{
-      var retorno = true;
-      this.lista.subscribe(snapshots=>{
-        snapshots.forEach(snapshot => {
-          if(this.scannedCode == snapshot.val()){
-            retorno = false;
-          }
-        });
-    })
+  VerifyCode(code: string): boolean{
+    var retorno = true;
+    this.listaDB.forEach(a => {
+      if (a == code) {
+        retorno = false;
+      }
+    });
     return retorno;
   }
 
@@ -93,20 +102,26 @@ export class HomePage implements AfterViewInit, OnDestroy {
   }
 
   Cargar(){
-    if(this.VerifyCode()){
-      this.lista.push(this.scannedCode).then(r => {
-        this.showToastOk("Carga Exitosa!");
+    if (this.scannedCodes.length > 0) {
+        this.scannedCodes.forEach(code => {
+          if(this.VerifyCode(code)){
+            this.lista.push(code).then(r => {
+              this.showToastOk("Carga Exitosa de codigo: "+ code);
+            }).catch(e => {
+              this.showToastError("Error al cargar");
+            });
+          } else {
+            this.toastCtrl.create({
+              message: "Codigo"+ code +" ya utilizado, no se cargará...",
+              position: 'top',
+              cssClass:"ErrorToast",
+              duration: 1800
+            }).present();
+          }
+        });
         this.scannedCodes = new Array<string>();
-      }).catch(e => {
-        this.showToastError("Error al cargar");
-      });
-    } else {
-      this.toastCtrl.create({
-        message: "Codigo ya utilizado",
-        position: 'top',
-        cssClass:"ErrorToast",
-        duration: 1800
-      }).present();
-    }
+      } else {
+        this.showToastError("No hay códigos cargados.");
+      }
   }
 }

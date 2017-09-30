@@ -1,13 +1,11 @@
 <ion-header>
-    <button ion-button style="color: red;" (click)="logout()"><ion-icon name="power"></ion-icon></button>
-
-</ion-header>
-<ion-header>
-    <ion-navbar color="dark">
-      <ion-title>Carga de Credito</ion-title>
+  <ion-navbar color="dark">
+    <ion-title>Carga de Credito</ion-title>
+    <ion-buttons end>
       <button ion-button style="color: red; background-color: grey;" (click)="logout()"><ion-icon name="power"></ion-icon></button>
-    </ion-navbar>
-  </ion-header>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
 <ion-content padding style="background-image: url('assets/images/fondo2.jpg')">
   <div>
     <br>
@@ -19,23 +17,15 @@
     <br>
     <br>
     <button ion-button style="width:100%; margin: 0 auto; border-radius: 25px; color:black; font-weight: bold; background-color: grey" type="submit" full (click)="scanCode()">Escanear  <ion-icon name="qr-scanner"></ion-icon></button>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+    <ul>
+      <li *ngFor="let arr of scannedCodes">{{ arr }}</li>
+    </ul>
     <div id="form"> 
       <form method="post">
         <div style= "width:12em; margin: 0 auto">
             <button type="submit" ion-button style="width:100%; margin: 0 auto; border-radius: 25px; color:black; font-weight: bold; background-color: grey" class="login-button" (click)="Cargar()" >Cargar credito</button>
           </div>
-          <ul>
-            <li *ngFor="let arr of scannedCodes">{{ arr }}</li>
-          </ul>
       </form>
     </div>
   </div>
 </ion-content>
-
