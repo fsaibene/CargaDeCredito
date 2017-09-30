@@ -3,9 +3,9 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { User } from '../../models/user';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { ToastController, Loading, LoadingController } from 'ionic-angular';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import { TabsPage } from '../tabs/tabs';
+import { HomePage } from '../home/home';
 import { RegisterPage } from '../register/register';
 import { AuthService } from '../../auth.service';
 import { NavService } from '../../nav.service';
@@ -39,11 +39,10 @@ export class LoginPage {
         loading.present();
         await this.authAf.auth.signInWithEmailAndPassword(user.email, user.password)
           .then(result => {
-            loading.dismiss();
             this.serviceLogged.isLogged$.next(true);
             this.ns.setNavRoot(this.navCtrl);
-            this.toastCtrl.create({message: "Bienvenido a Carga de crédito!", duration: 2500}).present();
-            this.navCtrl.setRoot(TabsPage)})
+            //this.toastCtrl.create({message: "Bienvenido a Carga de crédito!", duration: 2500}).present();
+            this.navCtrl.setRoot(HomePage)})
           .catch(error => {
             loading.dismiss();
             this.showToast(error.message);
@@ -127,6 +126,7 @@ export class LoginPage {
   private loadSpinner():Loading
   {
     let loader = this.loadingCtrl.create({
+      dismissOnPageChange: true,
       content:"Cargando..",
       duration: 2500
       

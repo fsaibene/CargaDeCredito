@@ -1,3 +1,14 @@
 page-home {
-
+}
+.ErrorToast{
+    > div{
+        background-color:#FF0015!important;
+        text-align: center;
+    }
+}
+.OkToast{
+    > div{
+        background-color:#00BD1B!important;
+        text-align: center;
+    }
 }

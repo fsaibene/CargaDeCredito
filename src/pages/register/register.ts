@@ -42,12 +42,10 @@ export class RegisterPage {
         loading.present();
         await this.authAf.auth.createUserWithEmailAndPassword(user.email, user.password)
         .then(r => { 
-          loading.dismiss();
           this.toastCtrl.create({message: "Usuario registrado con éxito!", duration: 3000}).present(); 
           this.navCtrl.setRoot(LoginPage);
         })
         .catch(e => {
-          loading.dismiss();
           this.toastCtrl.create({message: "Error al registrarse:" + e.message, duration: 3000}).present();
         });
       }
@@ -55,6 +53,7 @@ export class RegisterPage {
     private loadSpinner():Loading
     {
       let loader = this.loadingCtrl.create({
+        dismissOnPageChange: true,
         content:"Registrando Usuario..",
         duration: 2500
       });
